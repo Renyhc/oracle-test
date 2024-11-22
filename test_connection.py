@@ -2,13 +2,13 @@ import oracledb
 import time
 from typing import Optional
 
-def try_connect(max_attempts: int = 10, delay: int = 5) -> Optional[oracledb.Connection]:
+def try_connect(max_attempts: int = 20, delay: int = 10) -> Optional[oracledb.Connection]:
     for attempt in range(max_attempts):
         try:
             connection = oracledb.connect(
                 user="test_user",
                 password="test123",
-                dsn="localhost:1521/FREE"
+                dsn="localhost:1521/FREEPDB1"
             )
             print(f"Conexión exitosa en el intento {attempt + 1}")
             return connection
