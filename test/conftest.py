@@ -1,7 +1,11 @@
 import pytest
 import oracledb
-from ..verify_oracle import verify_oracle
-from ..test_connection import try_connect
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from verify_oracle import verify_oracle
+from test_connection import try_connect
 
 @pytest.fixture(scope="session")
 def oracle_connection():
