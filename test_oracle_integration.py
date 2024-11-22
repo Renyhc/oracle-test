@@ -1,7 +1,7 @@
 import pytest
 import oracledb
-from verify_oracle import verify_oracle
-from test_connection import try_connect, test_database_connection
+from ..verify_oracle import verify_oracle
+from ..test_connection import try_connect, test_database_connection
 
 def test_oracle_version(oracle_cursor):
     """Prueba que verifica la versión de Oracle"""

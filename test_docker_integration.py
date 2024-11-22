@@ -1,7 +1,7 @@
 import pytest
 import subprocess
 import time
-from verify_oracle import verify_oracle
+from ..verify_oracle import verify_oracle
 
 def test_docker_container_running():
     """Verifica que el contenedor de Docker esté en ejecución"""

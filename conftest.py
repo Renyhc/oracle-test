@@ -1,7 +1,7 @@
 import pytest
 import oracledb
-from verify_oracle import verify_oracle
-from test_connection import try_connect
+from ..verify_oracle import verify_oracle
+from ..test_connection import try_connect
 
 @pytest.fixture(scope="session")
 def oracle_connection():
