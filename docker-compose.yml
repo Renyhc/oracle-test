@@ -1,0 +1,12 @@
+version: '3'
+services:
+  oracle:
+    image: gvenzl/oracle-free:latest
+    ports:
+      - "1521:1521"
+    environment:
+      - ORACLE_PASSWORD=oracle123
+      - APP_USER=test_user
+      - APP_USER_PASSWORD=test123
+    volumes:
+      - ./init-scripts:/container-entrypoint-initdb.d
