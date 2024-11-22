@@ -1,7 +1,14 @@
 import pytest
 import subprocess
 import time
-from ..verify_oracle import verify_oracle
+import docker
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from verify_oracle import verify_oracle
+from test_connection import try_connect
 
 def test_docker_container_running():
     """Verifica que el contenedor de Docker esté en ejecución"""
@@ -14,12 +21,25 @@ def test_docker_container_running():
 
 def test_docker_port_mapping():
     """Verifica que el puerto 1521 esté mapeado correctamente"""
+    # Obtener el nombre del contenedor usando docker-compose ps
+    container_name = subprocess.run(
+        ['docker-compose', 'ps', '-q', 'oracle'],
+        capture_output=True,
+        text=True
+    ).stdout.strip()
+
+    # Verificar que el contenedor existe
+    assert container_name, "El contenedor Oracle no está en ejecución"
+
+    # Verificar el mapeo de puertos
     result = subprocess.run(
-        ['docker', 'port', 'oracle'],
+        ['docker', 'port', container_name],
         capture_output=True,
         text=True
     )
-    assert '1521/tcp' in result.stdout
+    
+    assert result.returncode == 0, f"Error al obtener los puertos: {result.stderr}"
+    assert '1521/tcp' in result.stdout, f"Puerto 1521 no mapeado. Puertos disponibles: {result.stdout}"
 
 def test_database_accessibility():
     """Verifica que la base de datos sea accesible después del inicio"""
@@ -40,15 +60,6 @@ def test_container_logs():
     )
     assert 'ORA-' not in result.stdout  # No hay errores ORA-
     assert 'DATABASE IS READY TO USE!' in result.stdout
-import pytest
-import docker
-import time
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from verify_oracle import verify_oracle
-from test_connection import try_connect
 
 def test_docker_container_running():
     """Verifica que el contenedor de Oracle esté en ejecución"""
