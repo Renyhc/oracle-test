@@ -1,9 +1,23 @@
+-- Conectar como TEST_USER
+ALTER SESSION SET CONTAINER = FREEPDB1;
+
+-- Eliminar tabla si existe
+BEGIN
+   EXECUTE IMMEDIATE 'DROP TABLE employees';
+EXCEPTION
+   WHEN OTHERS THEN
+      IF SQLCODE != -942 THEN
+         RAISE;
+      END IF;
+END;
+/
+
 -- Crear tabla de ejemplo
 CREATE TABLE employees (
     id NUMBER PRIMARY KEY,
-    name VARCHAR2(100),
-    department VARCHAR2(100),
-    salary NUMBER
+    name VARCHAR2(100) NOT NULL,
+    department VARCHAR2(100) NOT NULL,
+    salary NUMBER(10,2) CHECK (salary > 0)
 );
 
 -- Insertar datos de prueba
