@@ -1,5 +1,6 @@
--- Conectar como TEST_USER
+-- Connect as SYSDBA and switch to TEST_USER
 ALTER SESSION SET CONTAINER = FREEPDB1;
+ALTER SESSION SET CURRENT_SCHEMA = TEST_USER;
 
 -- Eliminar tabla si existe
 BEGIN
