@@ -22,7 +22,6 @@ Proyecto de prueba para validar Oracle Database en Docker.
 2. O manualmente:
    ```
    docker-compose up -d
-   python3 test_connection.py
    ```
 
 3. Verificar la conexión y estructura de la base de datos:
@@ -52,9 +51,9 @@ Proyecto de prueba para validar Oracle Database en Docker.
    1   Juan Pérez      IT            50000
    2   María García    RRHH          45000
    3   Carlos López    Ventas        48000
-  ```
+   ```
 
 ## Notas
 - Los scripts SQL en la carpeta `init-scripts` se ejecutarán automáticamente al iniciar el contenedor
 - La base de datos puede tardar unos minutos en estar lista para conexiones
-- El script verify_oracle.py mostrará un reporte detallado del estado de la base de datos
+- El script `verify_oracle.py` mostrará un reporte detallado del estado de la base de datos
