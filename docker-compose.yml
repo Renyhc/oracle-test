@@ -1,7 +1,12 @@
-version: '3'
+version: '3.8'
 services:
   oracle:
-    image: gvenzl/oracle-free:latest
+    profiles:
+      - free
+      - xe21
+      - xe18
+      - xe11
+    image: ${ORACLE_IMAGE:-gvenzl/oracle-free:latest}
     ports:
       - "1521:1521"
     environment:
@@ -9,7 +14,7 @@ services:
       - APP_USER=test_user
       - APP_USER_PASSWORD=test123
       - ORACLE_ALLOW_REMOTE=true
-      - ORACLE_PDB=FREEPDB1
+      - ORACLE_PDB=${ORACLE_PDB:-FREEPDB1}
     volumes:
       - ./init-scripts:/container-entrypoint-initdb.d
     healthcheck:

@@ -2,6 +2,17 @@
 
 Proyecto de prueba para validar Oracle Database en Docker.
 
+## Versiones Soportadas
+### Oracle Database Free
+- [Oracle Free (23c)](https://container-registry.oracle.com/database/free)
+- [Documentación Oracle Free 23c](https://docs.oracle.com/en/database/oracle/oracle-database/23/index.html)
+
+### Oracle Express Edition (XE)
+- [Oracle XE](https://hub.docker.com/r/gvenzl/oracle-xe)
+  - [Oracle XE 21c](https://docs.oracle.com/en/database/oracle/oracle-database/21/xeinl/index.html)
+  - [Oracle XE 18c](https://docs.oracle.com/en/database/oracle/oracle-database/18/xeinl/index.html)
+  - [Oracle XE 11g](https://docs.oracle.com/cd/E17781_01/index.htm)
+
 ## Requisitos
 - Docker y Docker Compose
 - Python 3.x
@@ -14,17 +25,22 @@ Proyecto de prueba para validar Oracle Database en Docker.
    ```
 
 ## Uso
-1. Ejecutar con script:
+1. Iniciar Oracle con la versión deseada:
    ```bash
-   ./test_oracle.sh
+   # Para Oracle Free (23c)
+   ./start-oracle.sh free
+
+   # Para Oracle XE 21c
+   ./start-oracle.sh xe21
+
+   # Para Oracle XE 18c
+   ./start-oracle.sh xe18
+
+   # Para Oracle XE 11g
+   ./start-oracle.sh xe11
    ```
 
-2. O manualmente:
-   ```bash
-   docker-compose up -d
-   ```
-
-3. Verificar la conexión y estructura de la base de datos:
+2. Verificar la conexión y estructura de la base de datos:
    ```bash
    python verify_oracle.py
    ```
@@ -34,7 +50,7 @@ Proyecto de prueba para validar Oracle Database en Docker.
    - Estructura correcta de las tablas
    - Datos de prueba
 
-4. Validar Oracle Database en Docker:
+3. Validar Oracle Database en Docker:
    ```bash
    python test_connection.py
    ```
@@ -54,6 +70,6 @@ Proyecto de prueba para validar Oracle Database en Docker.
    ```
 
 ## Notas
+- [Oracle XE](https://hub.docker.com/r/gvenzl/oracle-xe) tiene limitaciones de recursos según la versión
 - Los scripts SQL en la carpeta `init-scripts` se ejecutarán automáticamente al iniciar el contenedor
 - La base de datos puede tardar unos minutos en estar lista para conexiones
-- El script `verify_oracle.py` mostrará un reporte detallado del estado de la base de datos
