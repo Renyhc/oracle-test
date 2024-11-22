@@ -1,4 +1,4 @@
-import noracledb
+import oracledb
 import time
 from typing import Optional
 
