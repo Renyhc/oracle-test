@@ -40,3 +40,42 @@ def test_container_logs():
     )
     assert 'ORA-' not in result.stdout  # No hay errores ORA-
     assert 'DATABASE IS READY TO USE!' in result.stdout
+import pytest
+import docker
+import time
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from verify_oracle import verify_oracle
+from test_connection import try_connect
+
+def test_docker_container_running():
+    """Verifica que el contenedor de Oracle esté en ejecución"""
+    client = docker.from_env()
+    containers = client.containers.list()
+    oracle_containers = [c for c in containers if 'oracle' in c.name.lower()]
+    assert len(oracle_containers) > 0, "No se encontró ningún contenedor de Oracle en ejecución"
+    
+def test_oracle_port_mapping():
+    """Verifica que el puerto 1521 esté mapeado correctamente"""
+    client = docker.from_env()
+    containers = client.containers.list()
+    oracle_container = next(c for c in containers if 'oracle' in c.name.lower())
+    port_mappings = oracle_container.ports
+    assert '1521/tcp' in port_mappings, "El puerto 1521 no está mapeado"
+
+def test_database_accessibility():
+    """Verifica que la base de datos sea accesible"""
+    connection = try_connect(max_attempts=1)
+    assert connection is not None, "No se pudo conectar a la base de datos"
+    connection.close()
+
+def test_container_logs():
+    """Verifica que los logs del contenedor no muestren errores críticos"""
+    client = docker.from_env()
+    containers = client.containers.list()
+    oracle_container = next(c for c in containers if 'oracle' in c.name.lower())
+    logs = oracle_container.logs().decode('utf-8').lower()
+    assert 'ora-00600' not in logs, "Se encontraron errores críticos en los logs"
+    assert 'ora-07445' not in logs, "Se encontraron errores de corrupción en los logs"
