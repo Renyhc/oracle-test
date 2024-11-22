@@ -50,24 +50,37 @@ Proyecto de prueba para validar Oracle Database en Docker.
    - Estructura correcta de las tablas
    - Datos de prueba
 
-3. Validar Oracle Database en Docker:
+3. Ejecutar las pruebas automatizadas:
    ```bash
-   python test_connection.py
-   ```
-   Este script realizará:
-   - Prueba de conexión a la base de datos
-   - Consulta a la tabla EMPLOYEES
-   - Mostrará los resultados en consola
+   # Ejecutar todas las pruebas
+   pytest test/ -v
 
-   Ejemplo de salida exitosa:
+   # Ejecutar solo pruebas de integración con Oracle
+   pytest test/test_oracle_integration.py -v
+
+   # Ejecutar solo pruebas de integración con Docker
+   pytest test/test_docker_integration.py -v
    ```
-   Conexión exitosa en el intento 1
-   Resultados de la consulta:
-   ID  NOMBRE          DEPARTAMENTO  SALARIO
-   1   Juan Pérez      IT            50000
-   2   María García    RRHH          45000
-   3   Carlos López    Ventas        48000
-   ```
+
+   Las pruebas incluyen:
+
+   **Pruebas de Integración con Oracle:**
+   - Verificación de versión de Oracle
+   - Estado de la conexión a la base de datos
+   - Mecanismo de reintento de conexión
+   - Manejo de credenciales inválidas
+   - Operaciones CRUD (Crear, Leer, Actualizar, Eliminar)
+   - Rollback de transacciones
+
+   **Pruebas de Integración con Docker:**
+   - Verificación del estado del contenedor
+   - Mapeo de puertos
+   - Accesibilidad de la base de datos
+   - Análisis de logs del contenedor
+
+## Requisitos Adicionales para Pruebas
+- pytest (`pip install pytest`)
+- oracledb (`pip install oracledb`)
 
 ## Notas
 - [Oracle XE](https://hub.docker.com/r/gvenzl/oracle-xe) tiene limitaciones de recursos según la versión
