@@ -1,34 +1,15 @@
--- Switch to the correct container
+-- Connect as SYSDBA and switch to TEST_USER
 ALTER SESSION SET CONTAINER = FREEPDB1;
-
--- Create TEST_USER if it doesn't exist
-DECLARE
-  user_exists NUMBER;
-BEGIN
-  SELECT COUNT(*) INTO user_exists FROM dba_users WHERE username = 'TEST_USER';
-  IF user_exists = 0 THEN
-    EXECUTE IMMEDIATE 'CREATE USER TEST_USER IDENTIFIED BY test123';
-    EXECUTE IMMEDIATE 'GRANT CONNECT, RESOURCE TO TEST_USER';
-    EXECUTE IMMEDIATE 'GRANT UNLIMITED TABLESPACE TO TEST_USER';
-  END IF;
-END;
-/
-
--- Switch to TEST_USER schema
 ALTER SESSION SET CURRENT_SCHEMA = TEST_USER;
 
--- Drop table if exists (with proper error handling)
-DECLARE
-  table_exists NUMBER;
+-- Eliminar tabla si existe
 BEGIN
-  SELECT COUNT(*) INTO table_exists 
-  FROM all_tables 
-  WHERE table_name = 'EMPLOYEES' 
-  AND owner = 'TEST_USER';
-  
-  IF table_exists > 0 THEN
-    EXECUTE IMMEDIATE 'DROP TABLE employees';
-  END IF;
+   EXECUTE IMMEDIATE 'DROP TABLE employees';
+EXCEPTION
+   WHEN OTHERS THEN
+      IF SQLCODE != -942 THEN
+         RAISE;
+      END IF;
 END;
 /
 
@@ -41,8 +22,9 @@ CREATE TABLE employees (
 );
 
 -- Insertar datos de prueba
-INSERT INTO employees VALUES (1, 'John Doe', 'IT', 75000);
-INSERT INTO employees VALUES (2, 'Jane Smith', 'HR', 65000);
-INSERT INTO employees VALUES (3, 'Bob Johnson', 'Sales', 80000);
-INSERT INTO employees VALUES (4, 'Alice Brown', 'IT', 72000);
+INSERT INTO employees VALUES (1, 'Rene Hdez', 'IT', 75000);
+INSERT INTO employees VALUES (2, 'Sergio Napoli', 'HR', 85000);
+INSERT INTO employees VALUES (3, 'David Garofalo', 'Sales', 80000);
+INSERT INTO employees VALUES (4, 'Leonel Bazan', 'IT', 81000);
+INSERT INTO employees VALUES (4, 'Santi Fdez', 'IT', 82000);
 COMMIT;
